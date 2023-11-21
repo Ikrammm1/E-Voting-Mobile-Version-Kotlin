@@ -4,7 +4,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object RetrofitClient {
-    private const val BASE_URL = "http://10.4.204.69/e-voting---php-native/api/"
+    private const val BASE_URL = "http://10.4.204.73/e-voting---php-native/api/"
 
     val instance: APIService by lazy {
         val retrofit = Retrofit.Builder()

@@ -41,15 +41,22 @@ class AdapterCandidate (
         val data = candidates[position]
         holder.Nama.text = "${data.firstname} ${data.lastname}"
         holder.Visi.text = data.platform
-        val imageUrl = "http://10.4.204.69/e-voting---php-native${data.photo}"
+        val imageUrl = "http://10.4.204.73/e-voting---php-native${data.photo}"
         Log.d("image", imageUrl)
         Picasso.get()
             .load(imageUrl)
             .into(holder.Photo)
         holder.Photo
-        holder.BtnVote.setOnClickListener {
-            listener.onClick(data)
+        if (data.status_vote == "true"){
+            holder.BtnVote.visibility = View.GONE
+        }else{
+            holder.BtnVote.visibility = View.VISIBLE
+            holder.BtnVote.setOnClickListener {
+                listener.onClick(data)
+            }
         }
+
+
     }
 
     public fun setData(data: List<ModelCandidates.dataCandidate>){
