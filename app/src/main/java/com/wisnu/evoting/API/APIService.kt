@@ -28,6 +28,12 @@ interface APIService {
     ):Call<ModelCandidates>
 
     @FormUrlEncoded
+    @POST("pilihanSaya.php")
+    fun PilihanSaya(
+        @Field("voters_id") voters_id : String
+    ):Call<ModelHasil>
+
+    @FormUrlEncoded
     @POST("vote.php")
     fun Vote(
         @Field("voters_id") voters_id : String,
