@@ -60,7 +60,7 @@ class ProfileActivity : AppCompatActivity() {
                 .show()
         }
         val ImageUser = findViewById<CircleImageView>(R.id.prof)
-        val imageUrl = "http://10.4.204.69/e-voting---php-native${profil.getString("photo", null).toString()}"
+        val imageUrl = "http://10.4.204.73/e-voting---php-native${profil.getString("photo", null).toString()}"
         Log.d("image", imageUrl)
         Picasso.get()
             .load(imageUrl)

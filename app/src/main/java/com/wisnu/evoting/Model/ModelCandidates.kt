@@ -9,7 +9,8 @@ class ModelCandidates(
         val firstname: String?,
         val lastname: String?,
         val photo: String?,
-        val platform: String?
+        val platform: String?,
+        val status_vote : String?
 
     )
 }

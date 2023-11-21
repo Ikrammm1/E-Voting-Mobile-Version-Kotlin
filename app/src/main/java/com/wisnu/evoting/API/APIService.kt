@@ -21,8 +21,11 @@ interface APIService {
     @GET("HasilVote.php")
     fun Result():Call<List<ModelHasil>>
 
-    @GET("ListCandidate.php")
-    fun Candidates():Call<ModelCandidates>
+    @FormUrlEncoded
+    @POST("ListCandidate.php")
+    fun Candidates(
+        @Field("voters_id") voters_id : String
+    ):Call<ModelCandidates>
 
     @FormUrlEncoded
     @POST("vote.php")
