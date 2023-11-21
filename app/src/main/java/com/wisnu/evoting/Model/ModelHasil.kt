@@ -1,4 +1,15 @@
 package com.wisnu.evoting.Model
 
-class ModelHasil {
-}
+data class ModelHasil (
+        val id: String?,
+        val candidate_id: String?,
+        val position_id: String?,
+        val firstname: String?,
+        val lastname: String?,
+        val photo: String?,
+        val platform: String?,
+        val jml_vote: Int?
+
+
+
+    )
