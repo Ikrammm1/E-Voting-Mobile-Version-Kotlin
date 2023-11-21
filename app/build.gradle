@@ -24,6 +24,9 @@ android {
     }
 
 }
+repositories {
+    maven { url 'https://jitpack.io' }
+}
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
@@ -42,4 +45,16 @@ dependencies {
     implementation 'com.squareup.okhttp3:logging-interceptor:3.11.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.5.0'
     implementation 'com.google.code.gson:gson:2.8.5'
+
+    //grafik
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
+
+    //picaso
+    implementation 'com.squareup.picasso:picasso:2.71828'
+
+    //cicle image
+    implementation 'de.hdodenhof:circleimageview:3.1.0'
+
+
+
 }

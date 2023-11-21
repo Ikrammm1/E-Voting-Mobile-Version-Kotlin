@@ -55,7 +55,7 @@
                     android:layout_marginTop="8dp" />
 
                 <Button
-                    android:id="@+id/btnLogout"
+                    android:id="@+id/btnVote"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Vote"
