@@ -1,12 +1,15 @@
 package com.wisnu.evoting.Ui.Hasil
 
+import android.content.DialogInterface
 import android.content.Intent
+import android.content.SharedPreferences
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.components.XAxis
@@ -20,6 +23,7 @@ import com.wisnu.evoting.API.RetrofitClient
 import com.wisnu.evoting.Model.ModelHasil
 import com.wisnu.evoting.R
 import com.wisnu.evoting.Ui.Dashboard.Dashboard
+import com.wisnu.evoting.Ui.Login.LoginActivity
 import com.wisnu.evoting.Ui.Voting.VotingActivity
 import retrofit2.Call
 import retrofit2.Callback
@@ -31,6 +35,8 @@ class HasilActivity : AppCompatActivity() {
     lateinit var NamaCandidate : TextView
     private lateinit var BtnLihat : TextView
     private lateinit var swipeRefreshLayout: SwipeRefreshLayout
+    private lateinit var profil : SharedPreferences
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,10 +44,28 @@ class HasilActivity : AppCompatActivity() {
         barChart = findViewById(R.id.barChart)
         NamaCandidate = findViewById(R.id.NamaCandidate)
         BtnLihat = findViewById(R.id.btnLihat)
+        profil = getSharedPreferences("Login_Session", MODE_PRIVATE)
+
 
         BtnLihat.setOnClickListener {
-            startActivity(Intent(this, VotingActivity::class.java))
-            finish()
+            RetrofitClient.instance.PilihanSaya(profil.getString("id", null).toString()).enqueue(object : Callback<ModelHasil>{
+                override fun onFailure(call: Call<ModelHasil>, t: Throwable) {
+                    Toast.makeText(this@HasilActivity, "Maaf Sistem Sedang Gangguan", Toast.LENGTH_SHORT).show()
+                    Log.e("Kesalahan API Pilihan Saya : ", t.toString())
+                }
+
+                override fun onResponse(
+                    call: Call<ModelHasil>,
+                    response: Response<ModelHasil>
+                ) {
+                    var alertDialog = AlertDialog.Builder(this@HasilActivity)
+                        .setTitle("${response.body()!!.firstname} ${response.body()!!.lastname}")
+                        .setNegativeButton("Cancel", DialogInterface.OnClickListener { dialog, which ->  })
+                        .show()
+                }
+
+            })
+
         }
         SetUpResult()
         swipeRefreshLayout = findViewById(R.id.swipeRefreshLayout)
