@@ -34,6 +34,7 @@ class HasilActivity : AppCompatActivity() {
     var highestVoteName: String? = null
     lateinit var NamaCandidate : TextView
     private lateinit var BtnLihat : TextView
+    private lateinit var pilihan : String
     private lateinit var swipeRefreshLayout: SwipeRefreshLayout
     private lateinit var profil : SharedPreferences
 
@@ -58,8 +59,14 @@ class HasilActivity : AppCompatActivity() {
                     call: Call<ModelHasil>,
                     response: Response<ModelHasil>
                 ) {
+
+                    if (response.body()!!.nim == null){
+                        pilihan = "Anda Belum Memilih"
+                    }else{
+                        pilihan = "${response.body()!!.nim} ${response.body()!!.fullname}"
+                    }
                     var alertDialog = AlertDialog.Builder(this@HasilActivity)
-                        .setTitle("${response.body()!!.firstname} ${response.body()!!.lastname}")
+                        .setTitle(pilihan)
                         .setNegativeButton("Cancel", DialogInterface.OnClickListener { dialog, which ->  })
                         .show()
                 }
@@ -106,15 +113,15 @@ class HasilActivity : AppCompatActivity() {
         var highestVoteCount = 0
 
         for ((index, data) in chartDataList!!.withIndex()) {
-            entries.add(BarEntry(index.toFloat(), data.jml_vote, data.firstname))
-            labels.add("${data.firstname} ${data.lastname}")
+            entries.add(BarEntry(index.toFloat(), data.jml_vote, data.fullname))
+            labels.add(data.fullname)
 
             val voteCount = data.jml_vote.toInt()
 
             // Check if the current vote count is higher than the current highest vote count
             if (voteCount > highestVoteCount) {
                 highestVoteCount = voteCount
-                highestVoteName = "${data.firstname} ${data.lastname}"
+                highestVoteName = data.fullname
             }
             NamaCandidate.text = highestVoteName
 

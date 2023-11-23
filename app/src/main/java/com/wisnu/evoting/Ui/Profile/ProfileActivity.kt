@@ -6,10 +6,7 @@ import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ImageView
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import com.squareup.picasso.Picasso
 import com.wisnu.evoting.API.RetrofitClient
@@ -26,8 +23,9 @@ class ProfileActivity : AppCompatActivity() {
 
     lateinit var BtnSimpan : Button
     lateinit var BtnLogout : Button
-    lateinit var EtFirst : EditText
-    lateinit var EtLast : EditText
+    lateinit var EtNim : TextView
+    lateinit var EtName : EditText
+    lateinit var EtPass : EditText
     private lateinit var profil : SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,13 +34,14 @@ class ProfileActivity : AppCompatActivity() {
 
         profil = getSharedPreferences("Login_Session", MODE_PRIVATE)
 
-        EtFirst = findViewById(R.id.etFirst)
-        EtLast = findViewById(R.id.etLast)
+        EtNim = findViewById(R.id.etNim)
+        EtName = findViewById(R.id.etName)
+        EtPass = findViewById(R.id.etPass)
         BtnSimpan = findViewById(R.id.btnSimpan)
         BtnLogout = findViewById(R.id.btnLogout)
 
-        EtFirst.setText(profil.getString("firstname", null).toString())
-        EtLast.setText(profil.getString("lastname", null).toString())
+        EtNim.setText(profil.getString("nim", null).toString())
+        EtName.setText(profil.getString("fullname", null).toString())
 
         BtnLogout.setOnClickListener {
             var alertDialog = AlertDialog.Builder(this)
@@ -60,7 +59,8 @@ class ProfileActivity : AppCompatActivity() {
                 .show()
         }
         val ImageUser = findViewById<CircleImageView>(R.id.prof)
-        val imageUrl = "http://10.4.204.73/e-voting---php-native${profil.getString("photo", null).toString()}"
+//        val imageUrl = "http://10.4.204.73/e-voting---php-native${profil.getString("photo", null).toString()}"
+        val imageUrl = "http://192.168.1.10/votesystem${profil.getString("photo", null).toString()}"
         Log.d("image", imageUrl)
         Picasso.get()
             .load(imageUrl)
@@ -69,8 +69,8 @@ class ProfileActivity : AppCompatActivity() {
         BtnSimpan.setOnClickListener {
             RetrofitClient.instance.EditUser(
                 profil.getString("id", null).toString(),
-                EtFirst.text.toString(),
-                EtLast.text.toString()
+                EtName.text.toString(),
+                EtPass.text.toString()
             ).enqueue(object : Callback<ModelResponse>{
                 override fun onFailure(call: Call<ModelResponse>, t: Throwable) {
                     Toast.makeText(this@ProfileActivity, "Maaf Sistem Sedang Gangguan", Toast.LENGTH_SHORT).show()

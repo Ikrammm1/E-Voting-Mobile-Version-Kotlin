@@ -41,7 +41,7 @@ class LoginActivity : AppCompatActivity() {
 
             when{
                 EtvoterId.text.toString() == "" ->{
-                    EtvoterId.error = "Voter Id Tidak Boleh Kosong!"
+                    EtvoterId.error = "NIM Tidak Boleh Kosong!"
                 }
                 EtPassword.text.toString() == "" -> {
                     EtPassword.error = "Password Tidak Boleh Kosong!"
@@ -64,8 +64,9 @@ class LoginActivity : AppCompatActivity() {
                     getSharedPreferences("Login_Session", MODE_PRIVATE)
                         .edit()
                         .putString("id", response.body()?.payload?.id)
-                        .putString("firstname", response.body()?.payload?.firstname)
-                        .putString("lastname", response.body()?.payload?.lastname)
+                        .putString("nim", response.body()?.payload?.nim)
+                        .putString("fullname", response.body()?.payload?.fullname)
+                        .putString("password", response.body()?.payload?.password)
                         .putString("photo", response.body()?.payload?.photo)
                         .apply()
 
@@ -73,7 +74,7 @@ class LoginActivity : AppCompatActivity() {
                         startActivity(Intent(this@LoginActivity, Dashboard::class.java))
                         finish()
                     }else{
-                        Toast.makeText(this@LoginActivity, "Voter Id / Password Salah", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@LoginActivity, "NIM / Password Salah", Toast.LENGTH_SHORT).show()
                     }
                 } else {
                     Toast.makeText(this@LoginActivity, "Kesalahan", Toast.LENGTH_SHORT).show()

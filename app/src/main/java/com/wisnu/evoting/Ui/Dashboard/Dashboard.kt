@@ -27,14 +27,15 @@ class Dashboard : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_dashboard)
         profil = getSharedPreferences("Login_Session", MODE_PRIVATE)
-        val NamaUser ="${ profil.getString("firstname", null).toString()} ${profil.getString("lastname", null).toString()}"
+        val NamaUser =profil.getString("fullname", null).toString()
 
         BtnVoting = findViewById(R.id.btnCandidate)
         BtnHasil = findViewById(R.id.btnHasil)
         BtnProfil = findViewById(R.id.btnProfile)
         txtName = findViewById(R.id.title)
         val ImageUser = findViewById<CircleImageView>(R.id.prof)
-        val imageUrl = "http://10.4.204.73/e-voting---php-native${profil.getString("photo", null).toString()}"
+//        val imageUrl = "http://10.4.204.73/e-voting---php-native${profil.getString("photo", null).toString()}"
+        val imageUrl = "http://192.168.1.10/votesystem${profil.getString("photo", null).toString()}"
         Log.d("image", imageUrl)
         Picasso.get()
             .load(imageUrl)
