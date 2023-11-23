@@ -76,10 +76,10 @@ class VotingActivity : AppCompatActivity() {
         Adapter = AdapterCandidate(arrayListOf(), object : AdapterCandidate.OnAdapterlistener{
             override fun onClick(vote: ModelCandidates.dataCandidate) {
                 var alertDialog = AlertDialog.Builder(this@VotingActivity)
-                    .setTitle("Apakah Anda Yakin Ingin Memilih ${vote.firstname} ${vote.lastname} ?")
+                    .setTitle("Apakah Anda Yakin Ingin Memilih ${vote.nim} ${vote.fullname} ?")
                     .setPositiveButton("Ya", DialogInterface.OnClickListener { dialog, which ->
 
-                        RetrofitClient.instance.Vote(IdVoter, vote.id.toString(), vote.position_id.toString()).enqueue(object :
+                        RetrofitClient.instance.Vote(IdVoter, vote.id.toString()).enqueue(object :
                             Callback<ModelResponse> {
                             override fun onResponse(call: Call<ModelResponse>, response: Response<ModelResponse>) {
                                 if (response.isSuccessful){

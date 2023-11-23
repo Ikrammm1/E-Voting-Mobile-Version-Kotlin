@@ -14,7 +14,7 @@ interface APIService {
     @FormUrlEncoded
     @POST("login.php")
     fun login(
-        @Field("voter") voter : String,
+        @Field("nim") nim : String,
         @Field("password") password : String
     ) : Call<ResponseLogin>
 
@@ -38,14 +38,13 @@ interface APIService {
     fun Vote(
         @Field("voters_id") voters_id : String,
         @Field("candidate_id") candidate_id : String,
-        @Field("position_id") position_id : String
     ) : Call<ModelResponse>
 
     @FormUrlEncoded
     @POST("EditUser.php")
     fun EditUser(
         @Field("voters_id") voters_id : String,
-        @Field("firstname") firstname : String,
-        @Field("lastname") lastname : String
+        @Field("fullname") fullname : String,
+        @Field("password") password : String
     ) : Call<ModelResponse>
 }

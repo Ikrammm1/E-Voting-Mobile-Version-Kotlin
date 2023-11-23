@@ -20,6 +20,7 @@ class AdapterCandidate (
 ): RecyclerView.Adapter<AdapterCandidate.ViewHolder>() {
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val Nama = view.findViewById<TextView>(R.id.NamaCandidate)
+        val Nim = view.findViewById<TextView>(R.id.NimCandidate)
         val Visi = view.findViewById<TextView>(R.id.VisiCandidate)
         val Photo = view.findViewById<ImageView>(R.id.photoCandidate)
         val BtnVote = view.findViewById<Button>(R.id.btnVote)
@@ -39,20 +40,27 @@ class AdapterCandidate (
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val data = candidates[position]
-        holder.Nama.text = "${data.firstname} ${data.lastname}"
+        holder.Nama.text = data.fullname
+        holder.Nim.text = data.nim
         holder.Visi.text = data.platform
-        val imageUrl = "http://10.4.204.73/e-voting---php-native${data.photo}"
+//        val imageUrl = "http://10.4.204.73/e-voting---php-native${data.photo}"
+        val imageUrl = "http://192.168.1.10/votesystem${data.photo}"
         Log.d("image", imageUrl)
         Picasso.get()
             .load(imageUrl)
             .into(holder.Photo)
         holder.Photo
-        if (data.status_vote == "true"){
+        if (data.status_vote == "true" ){
             holder.BtnVote.visibility = View.GONE
         }else{
-            holder.BtnVote.visibility = View.VISIBLE
-            holder.BtnVote.setOnClickListener {
-                listener.onClick(data)
+            if (data.mulai_vote == true) {
+                holder.BtnVote.visibility = View.VISIBLE
+                holder.BtnVote.setOnClickListener {
+                    listener.onClick(data)
+                }
+            }else{
+                holder.BtnVote.visibility = View.GONE
+
             }
         }
 

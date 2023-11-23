@@ -38,25 +38,25 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="First Name : "
+            android:text="NIM : "
             android:layout_marginTop="20dp"/>
-        <EditText
-            android:id="@+id/etFirst"
+        <TextView
+            android:id="@+id/etNim"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:textSize="14sp"
-            android:inputType="text"
+            android:inputType="none"
             android:maxLines="1"
-            android:hint="Masukkan Nama"/>
+            android:text="NIM"/>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Last Name : "
+            android:text="Nama: "
             android:layout_marginTop="20dp"/>
         <EditText
-            android:id="@+id/etLast"
+            android:id="@+id/etName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -64,6 +64,20 @@
             android:inputType="text"
             android:maxLines="1"
             android:hint="Masukkan Username"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Password: "
+            android:layout_marginTop="20dp"/>
+        <EditText
+            android:id="@+id/etPass"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:textSize="14sp"
+            android:inputType="text"
+            android:maxLines="1"
+            android:hint="Masukkan Password"/>
 
 
 
