@@ -3,15 +3,20 @@ package com.wisnu.evoting.Ui.Voting
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.SharedPreferences
+import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.Button
+import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.wisnu.evoting.API.RetrofitClient
 import com.wisnu.evoting.Model.ModelCandidates
+import com.wisnu.evoting.Model.ModelCountDown
 import com.wisnu.evoting.Model.ModelResponse
 import com.wisnu.evoting.R
 import com.wisnu.evoting.Ui.Hasil.HasilActivity
@@ -27,6 +32,8 @@ class VotingActivity : AppCompatActivity() {
     lateinit var IdVoter : String
     private lateinit var swipeRefreshLayout: SwipeRefreshLayout
     lateinit var StatusVote : String
+    lateinit var BtnBack : ImageView
+    lateinit var CountDown : TextView
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,6 +41,9 @@ class VotingActivity : AppCompatActivity() {
         setContentView(R.layout.activity_voting)
         profil = getSharedPreferences("Login_Session", MODE_PRIVATE)
         IdVoter = profil.getString("id", null).toString()
+        BtnBack = findViewById(R.id.btnBack)
+        CountDown = findViewById(R.id.countdown)
+
         getData()
         setUpList()
 
@@ -42,6 +52,9 @@ class VotingActivity : AppCompatActivity() {
             getData()
             setUpList()
             swipeRefreshLayout.isRefreshing = false
+        }
+        BtnBack.setOnClickListener {
+            this.finish()
         }
     }
 
@@ -58,6 +71,28 @@ class VotingActivity : AppCompatActivity() {
                 response: Response<ModelCandidates>
             ) {
                 if (response.isSuccessful){
+                    RetrofitClient.instance.CountDown().enqueue(object : Callback<ModelCountDown>{
+                        override fun onFailure(call: Call<ModelCountDown>, t: Throwable) {
+                            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                        }
+
+                        override fun onResponse(
+                            call: Call<ModelCountDown>,
+                            response: Response<ModelCountDown>
+                        ) {
+                            if (response.isSuccessful){
+                                CountDown.text = "Sisa Waktu Pemilihan : ${response.body()!!.countdown}"
+                                if(response.body()!!.sisa_waktu <= 0 || response.body()!!.awal >= 0){
+                                    CountDown.text = "Bukan Periode Pemilihan"
+                                    CountDown.setTextColor(Color.parseColor("RED"))
+                                }else{
+                                    CountDown.setTextColor(Color.parseColor("#40C07B"))
+                                }
+                            }
+
+                        }
+
+                    })
                     val ListData = response.body()!!.candidates
                     ListData.forEach {
                         Adapter.setData(ListData)

@@ -23,6 +23,7 @@ class ProfileActivity : AppCompatActivity() {
 
     lateinit var BtnSimpan : Button
     lateinit var BtnLogout : Button
+    lateinit var BtnBack : ImageView
     lateinit var EtNim : TextView
     lateinit var EtName : EditText
     lateinit var EtPass : EditText
@@ -39,9 +40,14 @@ class ProfileActivity : AppCompatActivity() {
         EtPass = findViewById(R.id.etPass)
         BtnSimpan = findViewById(R.id.btnSimpan)
         BtnLogout = findViewById(R.id.btnLogout)
+        BtnBack = findViewById(R.id.btnBack)
 
         EtNim.setText(profil.getString("nim", null).toString())
         EtName.setText(profil.getString("fullname", null).toString())
+
+        BtnBack.setOnClickListener {
+            this.finish()
+        }
 
         BtnLogout.setOnClickListener {
             var alertDialog = AlertDialog.Builder(this)
@@ -59,8 +65,8 @@ class ProfileActivity : AppCompatActivity() {
                 .show()
         }
         val ImageUser = findViewById<CircleImageView>(R.id.prof)
-//        val imageUrl = "http://10.4.204.73/e-voting---php-native${profil.getString("photo", null).toString()}"
-        val imageUrl = "http://192.168.1.10/votesystem${profil.getString("photo", null).toString()}"
+        val imageUrl = "http://10.4.204.86/e-voting---php-native${profil.getString("photo", null).toString()}"
+//        val imageUrl = "http://192.168.1.10/votesystem${profil.getString("photo", null).toString()}"
         Log.d("image", imageUrl)
         Picasso.get()
             .load(imageUrl)

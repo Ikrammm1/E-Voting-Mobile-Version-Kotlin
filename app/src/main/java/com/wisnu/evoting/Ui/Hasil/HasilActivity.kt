@@ -7,6 +7,8 @@ import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -20,7 +22,9 @@ import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import com.github.mikephil.charting.utils.ColorTemplate
 import com.wisnu.evoting.API.APIService
 import com.wisnu.evoting.API.RetrofitClient
+import com.wisnu.evoting.Model.ModelCountDown
 import com.wisnu.evoting.Model.ModelHasil
+import com.wisnu.evoting.Model.ModelResponse
 import com.wisnu.evoting.R
 import com.wisnu.evoting.Ui.Dashboard.Dashboard
 import com.wisnu.evoting.Ui.Login.LoginActivity
@@ -35,9 +39,11 @@ class HasilActivity : AppCompatActivity() {
     lateinit var NamaCandidate : TextView
     private lateinit var BtnLihat : TextView
     private lateinit var pilihan : String
+    private lateinit var nimpilihan : String
+    private lateinit var idpilihan : String
     private lateinit var swipeRefreshLayout: SwipeRefreshLayout
     private lateinit var profil : SharedPreferences
-
+    lateinit var BtnBack : ImageView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,7 +52,11 @@ class HasilActivity : AppCompatActivity() {
         NamaCandidate = findViewById(R.id.NamaCandidate)
         BtnLihat = findViewById(R.id.btnLihat)
         profil = getSharedPreferences("Login_Session", MODE_PRIVATE)
+        BtnBack = findViewById(R.id.btnBack)
 
+        BtnBack.setOnClickListener {
+            this.finish()
+        }
 
         BtnLihat.setOnClickListener {
             RetrofitClient.instance.PilihanSaya(profil.getString("id", null).toString()).enqueue(object : Callback<ModelHasil>{
@@ -59,16 +69,71 @@ class HasilActivity : AppCompatActivity() {
                     call: Call<ModelHasil>,
                     response: Response<ModelHasil>
                 ) {
+                    idpilihan = response.body()!!.votes_id
 
                     if (response.body()!!.nim == null){
                         pilihan = "Anda Belum Memilih"
+                        nimpilihan = ""
                     }else{
+                        nimpilihan = response.body()!!.nim
                         pilihan = "${response.body()!!.nim} ${response.body()!!.fullname}"
                     }
                     var alertDialog = AlertDialog.Builder(this@HasilActivity)
                         .setTitle(pilihan)
-                        .setNegativeButton("Cancel", DialogInterface.OnClickListener { dialog, which ->  })
-                        .show()
+                    if (nimpilihan != ""){
+                        alertDialog.setPositiveButton("Ubah Pilihan", DialogInterface.OnClickListener { dialog, which ->
+                            RetrofitClient.instance.CountDown().enqueue(object : Callback<ModelCountDown>{
+                                override fun onFailure(call: Call<ModelCountDown>, t: Throwable) {
+                                    Toast.makeText(this@HasilActivity, "Terjadi Kesalahan", Toast.LENGTH_SHORT).show()
+                                }
+
+                                override fun onResponse(
+                                    call: Call<ModelCountDown>,
+                                    response: Response<ModelCountDown>
+                                ) {
+                                    if (response.isSuccessful){
+                                        if (response.body()!!.sisa_waktu <=0){
+                                            Toast.makeText(this@HasilActivity, "Waktu Pemilihan Telah Berakhir", Toast.LENGTH_SHORT).show()
+                                        }else{
+                                            var Dialog = AlertDialog.Builder(this@HasilActivity)
+                                                .setTitle("Apakah Anda Yakin Ingin Merubah Pilihan?")
+                                                .setPositiveButton("Ya", DialogInterface.OnClickListener { dialog, which ->
+                                                    RetrofitClient.instance.DeleteVote(idpilihan).enqueue(object : Callback<ModelResponse>{
+                                                        override fun onFailure(
+                                                            call: Call<ModelResponse>,
+                                                            t: Throwable
+                                                        ) {
+                                                            Toast.makeText(this@HasilActivity, "Maaf Sistem Sedang Gangguan", Toast.LENGTH_SHORT).show()
+                                                            Log.e("Kesalahan API Delete : ", t.toString())
+                                                        }
+
+                                                        override fun onResponse(
+                                                            call: Call<ModelResponse>,
+                                                            response: Response<ModelResponse>
+                                                        ) {
+
+                                                            val update = Intent (this@HasilActivity, VotingActivity::class.java)
+                                                            startActivity(update)
+                                                        }
+
+                                                    })
+
+                                                })
+                                                .setNegativeButton("Tidak", DialogInterface.OnClickListener { dialog, which ->  })
+                                                .show()
+                                        }
+                                    }
+                                }
+
+                            })
+
+                        })
+
+                    }else{
+                    }
+
+                    alertDialog.setNegativeButton("Cancel", DialogInterface.OnClickListener { dialog, which ->  })
+                    alertDialog.show()
                 }
 
             })
