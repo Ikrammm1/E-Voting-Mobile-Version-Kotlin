@@ -34,8 +34,8 @@ class Dashboard : AppCompatActivity() {
         BtnProfil = findViewById(R.id.btnProfile)
         txtName = findViewById(R.id.title)
         val ImageUser = findViewById<CircleImageView>(R.id.prof)
-//        val imageUrl = "http://10.4.204.73/e-voting---php-native${profil.getString("photo", null).toString()}"
-        val imageUrl = "http://192.168.1.10/votesystem${profil.getString("photo", null).toString()}"
+        val imageUrl = "http://10.4.204.86/e-voting---php-native${profil.getString("photo", null).toString()}"
+//        val imageUrl = "http://192.168.1.10/votesystem${profil.getString("photo", null).toString()}"
         Log.d("image", imageUrl)
         Picasso.get()
             .load(imageUrl)

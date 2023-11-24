@@ -43,8 +43,12 @@ class AdapterCandidate (
         holder.Nama.text = data.fullname
         holder.Nim.text = data.nim
         holder.Visi.text = data.platform
-//        val imageUrl = "http://10.4.204.73/e-voting---php-native${data.photo}"
-        val imageUrl = "http://192.168.1.10/votesystem${data.photo}"
+        var imageUrl = "http://10.4.204.86/e-voting---php-native/photo"
+        if (data.photo != ""){
+            imageUrl = "http://10.4.204.86/e-voting---php-native${data.photo}"
+            //        val imageUrl = "http://192.168.1.10/votesystem${data.photo}"
+        }
+
         Log.d("image", imageUrl)
         Picasso.get()
             .load(imageUrl)

@@ -1,9 +1,6 @@
 package com.wisnu.evoting.API
 
-import com.wisnu.evoting.Model.ModelCandidates
-import com.wisnu.evoting.Model.ModelHasil
-import com.wisnu.evoting.Model.ModelResponse
-import com.wisnu.evoting.Model.ResponseLogin
+import com.wisnu.evoting.Model.*
 import retrofit2.Call
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
@@ -34,10 +31,20 @@ interface APIService {
     ):Call<ModelHasil>
 
     @FormUrlEncoded
+    @POST("DeleteVote.php")
+    fun DeleteVote(
+        @Field("vote") vote : String
+    ):Call<ModelResponse>
+
+
+    @GET("countDown.php")
+    fun CountDown():Call<ModelCountDown>
+
+    @FormUrlEncoded
     @POST("vote.php")
     fun Vote(
         @Field("voters_id") voters_id : String,
-        @Field("candidate_id") candidate_id : String,
+        @Field("candidate_id") candidate_id : String
     ) : Call<ModelResponse>
 
     @FormUrlEncoded
