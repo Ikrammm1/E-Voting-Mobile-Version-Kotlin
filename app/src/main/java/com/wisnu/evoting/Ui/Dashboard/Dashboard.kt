@@ -22,6 +22,7 @@ class Dashboard : AppCompatActivity() {
     lateinit var BtnHasil : CardView
     lateinit var BtnProfil : CardView
     private lateinit var profil : SharedPreferences
+    lateinit var imageUrl : String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,8 +35,15 @@ class Dashboard : AppCompatActivity() {
         BtnProfil = findViewById(R.id.btnProfile)
         txtName = findViewById(R.id.title)
         val ImageUser = findViewById<CircleImageView>(R.id.prof)
-        val imageUrl = "http://10.4.204.86/e-voting---php-native${profil.getString("photo", null).toString()}"
-//        val imageUrl = "http://192.168.1.10/votesystem${profil.getString("photo", null).toString()}"
+        if (profil.getString("photo", null).toString() != "") {
+            imageUrl = "https://condign-shells.000webhostapp.com/E-Voting${profil.getString(
+                "photo",
+                null
+            ).toString()}"
+        }else{
+            imageUrl = "https://condign-shells.000webhostapp.com/E-Voting/images/foto.png"
+        }
+
         Log.d("image", imageUrl)
         Picasso.get()
             .load(imageUrl)

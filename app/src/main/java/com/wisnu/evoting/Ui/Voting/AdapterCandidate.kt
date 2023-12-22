@@ -43,10 +43,10 @@ class AdapterCandidate (
         holder.Nama.text = data.fullname
         holder.Nim.text = data.nim
         holder.Visi.text = data.platform
-        var imageUrl = "http://10.4.204.86/e-voting---php-native/photo"
+        var imageUrl = "https://condign-shells.000webhostapp.com/E-Voting/images/foto.png"
         if (data.photo != ""){
-            imageUrl = "http://10.4.204.86/e-voting---php-native${data.photo}"
-            //        val imageUrl = "http://192.168.1.10/votesystem${data.photo}"
+            imageUrl = "https://condign-shells.000webhostapp.com/E-Voting/${data.photo}"
+
         }
 
         Log.d("image", imageUrl)
